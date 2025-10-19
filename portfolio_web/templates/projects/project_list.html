@@ -1,0 +1,38 @@
+<!-- templates/projects/project_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Projects - My Portfolio{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-5">My Projects</h1>
+    
+    <div class="row">
+        {% for project in projects %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card project-card h-100">
+                {% if project.featured_image %}
+                <img src="{{ project.featured_image.url }}" class="card-img-top" alt="{{ project.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description|truncatewords:30 }}</p>
+                    
+                    <div class="mb-3">
+                        {% for tech in project.technologies_used.all %}
+                        <span class="badge bg-primary me-1">{{ tech.name }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <a href="{% url 'project_detail' project.slug %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No projects available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
