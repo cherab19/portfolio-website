@@ -3,8 +3,7 @@ from pathlib import Path
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-SECRET_KEY = 'django-insecure-m%#7*+^!&hx=lmjwo5l648(f7ui%q$a)ko#%p_0vzv9ida!w=@'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-m%#7*+^!&hx=lmjwo5l648(f7ui%q$a)ko#%p_0vzv9ida!w=@')
 
 DEBUG = True
 
@@ -37,8 +36,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
 ROOT_URLCONF = 'portfolio_web.urls'
 
 TEMPLATES = [
@@ -94,7 +93,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# Email settingsr
+# Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
