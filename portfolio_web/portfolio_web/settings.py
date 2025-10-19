@@ -20,8 +20,15 @@ INSTALLED_APPS = [
     'core',
     'projects',
     'blog',
+    'ckeditor',
 ]
-
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
