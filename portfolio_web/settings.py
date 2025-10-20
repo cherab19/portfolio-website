@@ -7,7 +7,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-m%#7*+^!&hx=lmjwo5l64
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',  # allows all subdomains of render.com
+    os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
