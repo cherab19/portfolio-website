@@ -7,12 +7,19 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-m%#7*+^!&hx=lmjwo5l64
 
 DEBUG = True
 
+import os
+
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.onrender.com',  # allows all subdomains of render.com
-    os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')
+    'portfolio-system-ou28.onrender.com',  # your actual Render domain
+    '.onrender.com',                       # wildcard for all Render subdomains
 ]
+
+# Optional fallback if Render sets this env var later
+if 'RENDER_EXTERNAL_HOSTNAME' in os.environ:
+    ALLOWED_HOSTS.append(os.environ['RENDER_EXTERNAL_HOSTNAME'])
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
