@@ -1,22 +1,132 @@
-<!-- templates/core/home.html -->
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Home - My Portfolio{% endblock %}
 
 {% block content %}
+<style>
+    /* Equal size for featured project cards */
+    .horizontal-scroll-wrapper {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 1rem;
+    }
+    .featured-project-card {
+        display: inline-block;
+        vertical-align: top;
+        width: 350px;
+        height: 480px;
+        margin-right: 24px;
+    }
+    .featured-project-card .card {
+        height: 100%;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .home-hero {
+        background: linear-gradient(120deg, #e0e7ff 0%, #f8fafc 100%);
+        border-radius: 1rem;
+        box-shadow: 0 4px 24px rgba(99,102,241,0.08);
+        padding: 2.5rem 2rem 2rem 2rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 1s cubic-bezier(.77,0,.175,1) both;
+    }
+    .home-section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #4f46e5;
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+    }
+    .home-card {
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(99,102,241,0.07);
+        margin-bottom: 2rem;
+        animation: fadeInUp 1.2s cubic-bezier(.77,0,.175,1) both;
+    }
+    .project-card .card-text {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
+        max-height: 120px;
+        overflow-y: auto;
+        padding-right: 2px;
+    }
+    .home-btn {
+        font-size: 1.1rem;
+        padding: 0.75rem 2rem;
+        border-radius: 2rem;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+        transition: background 0.2s, color 0.2s;
+    }
+    .home-btn:hover {
+        background: #6366f1;
+        color: #fff;
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(40px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<style>
+/* Hero image floating animation */
+.hero-profile.movable {
+    animation: moveUpDown 2.5s ease-in-out infinite alternate;
+}
+@keyframes moveUpDown {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-18px); }
+}
+/* Headings slide in from left */
+.hero-section h1, .hero-section h2 {
+    opacity: 0;
+    transform: translateX(-40px);
+    animation: slideInLeft 1s cubic-bezier(.77,0,.175,1) forwards;
+}
+.hero-section h1 { animation-delay: 0.2s; }
+.hero-section h2 { animation-delay: 0.4s; }
+@keyframes slideInLeft {
+    0% { opacity: 0; transform: translateX(-40px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+/* Buttons bounce on hover */
+.hero-buttons .btn {
+    transition: transform 0.2s;
+}
+.hero-buttons .btn:hover {
+    animation: bounce 0.4s;
+}
+@keyframes bounce {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+</style>
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">Hi, I'm <span class="text-warning">John Doe</span></h1>
-                <h2 class="h3 mb-4">Software Engineering Student & Full Stack Developer</h2>
+               <h1>Hi, I'm Chernet Degefe</h1>
+        <p>Software Engineering Student & Full Stack Developer</p>
+
+        <!-- Lottie Animation -->
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <lottie-player
+            src="https://assets9.lottiefiles.com/packages/lf20_1pxqjqps.json"
+            background="transparent"
+            speed="1"
+            style="width: 300px; height: 300px;"
+            loop
+            autoplay>
+        </lottie-player>
                 <p class="lead mb-5">
                     Passionate about creating innovative solutions and turning complex problems 
                     into simple, beautiful designs. Currently pursuing my degree while building 
-                    amazing projects.
+                    projects.
                 </p>
                 <div class="hero-buttons">
                     <a href="{% url 'project_list' %}" class="btn btn-light btn-lg me-3">
@@ -27,10 +137,10 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6 text-center">
+            <div class="col-lg-3 text-center">
                  <img src="{% static 'images/profile-pic.jpg' %}" 
                      alt="Profile Picture" 
-                     class="img-fluid rounded-circle shadow-lg hero-profile">
+                     class="img-fluid rounded-circle shadow-lg hero-profile movable">
                 </div>
             </div>
         </div>
@@ -46,11 +156,10 @@
                 <p class="text-muted">Some of my recent work that I'm proud of</p>
             </div>
         </div>
-        
-        <div class="row">
+        <div class="horizontal-scroll-wrapper" style="overflow-x: auto; white-space: nowrap; padding-bottom: 1rem;">
             {% for project in featured_projects %}
-            <div class="col-md-4 mb-4">
-                <div class="card project-card h-100 shadow-sm">
+            <div class="d-inline-block align-top" style="width: 350px; margin-right: 24px; vertical-align: top;">
+                <div class="card project-card h-100 shadow-sm" style="min-height: 100%;">
                     {% if project.featured_image %}
                     <img src="{{ project.featured_image.url }}" 
                          class="card-img-top project-img" 
@@ -60,11 +169,9 @@
                         <i class="fas fa-image fa-3x text-light"></i>
                     </div>
                     {% endif %}
-                    
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ project.title }}</h5>
                         <p class="card-text flex-grow-1">{{ project.description|truncatewords:20 }}</p>
-                        
                         <div class="technologies mb-3">
                             {% for tech in project.technologies_used.all|slice:":3" %}
                             <span class="badge bg-primary me-1">{{ tech.name }}</span>
@@ -73,7 +180,6 @@
                             <span class="badge bg-secondary">+{{ project.technologies_used.count|add:"-3" }} more</span>
                             {% endif %}
                         </div>
-                        
                         <div class="project-links mt-auto">
                             <a href="{% url 'project_detail' project.slug %}" class="btn btn-outline-primary btn-sm">
                                 View Details
@@ -90,11 +196,12 @@
                                 <span class="visually-hidden">Open demo</span>
                             </a>
                             {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center">
+            <div class="d-inline-block text-center" style="width: 350px;">
                 <div class="card">
                     <div class="card-body py-5">
                         <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
@@ -105,7 +212,6 @@
             </div>
             {% endfor %}
         </div>
-        
         {% if featured_projects %}
         <div class="row mt-4">
             <div class="col-12 text-center">
@@ -118,7 +224,7 @@
     </div>
 </section>
 
-<!-- Skills Overview Section -->
+<!-- Alternative Simple Skills Section -->
 <section class="py-5">
     <div class="container">
         <div class="row mb-5">
@@ -137,27 +243,9 @@
                         <h5 class="card-title mb-0">{{ category.grouper }}</h5>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            {% for skill in category.list|slice:":6" %}
-                            <div class="col-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">{{ skill.name }}</span>
-                                    <small class="text-muted ms-auto">
-                                        {% with ''|center:skill.proficiency_level as range %}
-                                        {% for i in range %}★{% endfor %}
-                                        {% endwith %}
-                                    </small>
-                                </div>
-                                <div class="progress skill-progress mt-1">
-                                    <div class="progress-bar bg-{{ forloop.counter|add:1|divisibleby:2|yesno:'primary,success' }} progress-{{ skill.proficiency_level }}" 
-                                         role="progressbar" 
-                                         title="{{ skill.name }} proficiency: {{ skill.proficiency_level }} of 4"
-                                         aria-valuenow="{{ skill.proficiency_level|default_if_none:'0' }}" 
-                                         aria-valuemin="0" 
-                                         aria-valuemax="4">
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="skill-tags">
+                            {% for skill in category.list %}
+                            <span class="badge bg-primary me-2 mb-2 p-2">{{ skill.name }}</span>
                             {% endfor %}
                         </div>
                     </div>
@@ -175,19 +263,8 @@
             </div>
             {% endfor %}
         </div>
-        
-        {% if skills %}
-        <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="{% url 'skills' %}" class="btn btn-outline-primary">
-                    View All Skills <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </section>
-
 <!-- Recent Blog Posts Section -->
 <section class="py-5 bg-light">
     <div class="container">
@@ -268,40 +345,8 @@
                         <i class="fas fa-paper-plane me-2"></i>Get In Touch
                     </a>
                     <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg">
-                        <i class="fas fa-user me-2"></i>Learn More About Me
+                        <i class="fas fa-user me-2"></i> About Me
                     </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Statistics Section (Optional) -->
-<section class="py-4 bg-dark text-white">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-3 col-6 mb-3">
-                <div class="stat-item">
-                    <h3 class="text-warning mb-1">{{ featured_projects|length }}+</h3>
-                    <p class="mb-0">Projects Completed</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="stat-item">
-                    <h3 class="text-warning mb-1">{{ skills|length }}+</h3>
-                    <p class="mb-0">Technologies</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="stat-item">
-                    <h3 class="text-warning mb-1">{{ recent_posts|length }}+</h3>
-                    <p class="mb-0">Blog Posts</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="stat-item">
-                    <h3 class="text-warning mb-1">100%</h3>
-                    <p class="mb-0">Satisfaction</p>
                 </div>
             </div>
         </div>

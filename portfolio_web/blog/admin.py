@@ -1,17 +1,16 @@
 # blog/admin.py - Enhanced
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import BlogPost
 
-@admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'is_published', 'published_date', 'created_at', 'word_count']
-    list_filter = ['is_published', 'created_at']
-    search_fields = ['title', 'content', 'excerpt']
-    prepopulated_fields = {'slug': ('title',)}
-    readonly_fields = ['created_at', 'updated_at']
-    list_editable = ['is_published']
-    date_hierarchy = 'published_date'
-    
-    def word_count(self, obj):
-        return len(obj.content.split())
-    word_count.short_description = 'Words'
+	list_display = ('title', 'published_date', 'is_published', 'image_preview')
+	readonly_fields = ('image_preview',)
+	fields = ('title', 'slug', 'excerpt', 'content', 'featured_image', 'image_preview', 'published_date', 'is_published')
+	def image_preview(self, obj):
+		if obj.featured_image:
+			return format_html('<img src="{}" style="max-width: 200px; max-height: 200px;" />', obj.featured_image.url)
+		return "No image"
+	image_preview.short_description = 'Image Preview'
+
+admin.site.register(BlogPost, BlogPostAdmin)
