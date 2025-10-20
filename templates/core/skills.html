@@ -1,0 +1,61 @@
+<!-- templates/core/skills.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Skills - My Portfolio{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/skills.css' %}">
+<div class="container mt-5">
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Skills & Expertise</h1>
+    
+    {% regroup skills by category as skill_categories %}
+    
+    {% for category in skill_categories %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="h5 mb-0">{{ category.grouper }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for skill in category.list %}
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="fw-medium">{{ skill.name }}</span>
+                        <span class="text-muted">
+                            {% with ''|center:skill.proficiency_level as range %}
+                            {% for i in range %}⭐{% endfor %}
+                            {% endwith %}
+                    <div class="progress skill-progress">
+                        {% if skill.proficiency_level|add:0 == 0 %}
+                        <div class="progress-bar w-0" role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             aria-label="{{ skill.name }} proficiency" title="{{ skill.name }} proficiency"></div>
+                        {% elif skill.proficiency_level|add:0 == 1 %}
+                        <div class="progress-bar w-25" role="progressbar"
+                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                             aria-label="{{ skill.name }} proficiency" title="{{ skill.name }} proficiency"></div>
+                        {% elif skill.proficiency_level|add:0 == 2 %}
+                        <div class="progress-bar w-50" role="progressbar"
+                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                             aria-label="{{ skill.name }} proficiency" title="{{ skill.name }} proficiency"></div>
+                        {% elif skill.proficiency_level|add:0 == 3 %}
+                        <div class="progress-bar w-75" role="progressbar"
+                             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                             aria-label="{{ skill.name }} proficiency" title="{{ skill.name }} proficiency"></div>
+                        {% else %}
+                        <div class="progress-bar w-100" role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                             aria-label="{{ skill.name }} proficiency" title="{{ skill.name }} proficiency"></div>
+                        {% endif %}
+                    </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

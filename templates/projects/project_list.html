@@ -1,0 +1,76 @@
+<!-- templates/projects/project_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Projects - My Portfolio{% endblock %}
+
+{% block content %}
+<style>
+    .projects-hero {
+        background: linear-gradient(120deg, #e0e7ff 0%, #f8fafc 100%);
+        border-radius: 1rem;
+        box-shadow: 0 4px 24px rgba(99,102,241,0.08);
+        padding: 2.5rem 2rem 2rem 2rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 1s cubic-bezier(.77,0,.175,1) both;
+    }
+    .projects-section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #4f46e5;
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+    }
+    .projects-card {
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(99,102,241,0.07);
+        margin-bottom: 2rem;
+        animation: fadeInUp 1.2s cubic-bezier(.77,0,.175,1) both;
+    }
+    .projects-btn {
+        font-size: 1.1rem;
+        padding: 0.75rem 2rem;
+        border-radius: 2rem;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+        transition: background 0.2s, color 0.2s;
+    }
+    .projects-btn:hover {
+        background: #6366f1;
+        color: #fff;
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(40px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
+<div class="container mt-5">
+    <h1 class="text-center mb-5">My Projects</h1>
+    
+    <div class="row">
+        {% for project in projects %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card project-card h-100">
+                {% if project.featured_image %}
+                <img src="{{ project.featured_image.url }}" class="card-img-top" alt="{{ project.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description|truncatewords:30 }}</p>
+                    
+                    <div class="mb-3">
+                        {% for tech in project.technologies_used.all %}
+                        <span class="badge bg-primary me-1">{{ tech.name }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <a href="{% url 'project_detail' project.slug %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No projects available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

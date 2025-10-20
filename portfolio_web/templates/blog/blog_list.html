@@ -1,0 +1,72 @@
+<!-- templates/blog/blog_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Blog - My Portfolio{% endblock %}
+
+{% block content %}
+<style>
+    .blog-hero {
+        background: linear-gradient(120deg, #e0e7ff 0%, #f8fafc 100%);
+        border-radius: 1rem;
+        box-shadow: 0 4px 24px rgba(99,102,241,0.08);
+        padding: 2.5rem 2rem 2rem 2rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 1s cubic-bezier(.77,0,.175,1) both;
+    }
+    .blog-section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #4f46e5;
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+    }
+    .blog-card {
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(99,102,241,0.07);
+        margin-bottom: 2rem;
+        animation: fadeInUp 1.2s cubic-bezier(.77,0,.175,1) both;
+    }
+    .blog-btn {
+        font-size: 1.1rem;
+        padding: 0.75rem 2rem;
+        border-radius: 2rem;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+        transition: background 0.2s, color 0.2s;
+    }
+    .blog-btn:hover {
+        background: #6366f1;
+        color: #fff;
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(40px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Blog Posts</h1>
+    
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-lg-6 mb-4">
+            <div class="card blog-card h-100">
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text text-muted">
+                        <small>{{ post.published_date|date:"F j, Y" }}</small>
+                    </p>
+                    <p class="card-text">{{ post.excerpt }}</p>
+                    <a href="{% url 'blog_detail' post.slug %}" class="btn btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No blog posts available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
